@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="sk">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Filip Tunega | Portfólio & CV</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        :root {
+            --neon-purple: #6a5cff;
+            --neon-blue: #00cfff;
+            --neon-gradient: linear-gradient(135deg, #6a5cff, #00cfff);
+            --bg-dark: #0a0c10;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --text-gray: #9aa4b2;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-dark);
+            color: #e6e6e6;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* --- BACKGROUND EFFECTS --- */
+        .bg-blobs {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            overflow: hidden;
+        }
+
+        .blob {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(106, 92, 255, 0.1), transparent 70%);
+            filter: blur(80px);
+            border-radius: 50%;
+            animation: move 25s infinite alternate;
+        }
+
+        @keyframes move {
+            from {
+                transform: translate(-10%, -10%);
+            }
+
+            to {
+                transform: translate(20%, 20%);
+            }
+        }
+
+        .cursor-follower {
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(0, 207, 255, 0.06), transparent 70%);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: -1;
+            transition: transform 0.15s ease-out;
+        }
+
+        /* --- NAVIGATION (UPDATED) --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 8%;
+            z-index: 1000;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+            /* Počiatočný stav na vrchu (priehľadný) */
+            background: rgba(10, 12, 16, 0);
+            backdrop-filter: blur(0px);
+            border-bottom: 1px solid transparent;
+        }
+
+        /* Stav pri scrollovaní (stmavnutie) */
+        nav.scrolled {
+            padding: 15px 8%;
+            background: rgba(10, 12, 16, 0.85);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        /* Stav skrytia pri scrollovaní nadol */
+        nav.nav-hidden {
+            transform: translateY(-100%);
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 1.5rem;
+            background: var(--neon-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links a {
+            color: var(--text-gray);
+            text-decoration: none;
+            margin-left: 25px;
+            font-size: 0.85rem;
+            transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-links a:hover {
+            color: #fff;
+            text-shadow: 0 0 10px var(--neon-purple);
+        }
+
+        /* --- LAYOUT SECTIONS --- */
+        section {
+            padding: 100px 10% 40px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: 1s ease-out;
+        }
+
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        h2 {
+            font-size: 2.2rem;
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        h2::after {
+            content: '';
+            height: 1px;
+            flex: 1;
+            background: var(--glass-border);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            padding: 30px;
+            border-radius: 20px;
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            border-color: var(--neon-purple);
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* --- FORMS & TIMELINE --- */
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-size: 0.85rem;
+            color: var(--text-gray);
+            margin-left: 5px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            padding: 15px;
+            border-radius: 12px;
+            color: #fff;
+            font-family: inherit;
+            transition: 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 15px rgba(0, 207, 255, 0.1);
+        }
+
+        .submit-btn {
+            background: var(--neon-gradient);
+            color: #000;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .submit-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(106, 92, 255, 0.4);
+        }
+
+        .timeline-item {
+            border-left: 2px solid var(--neon-blue);
+            padding-left: 20px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -7px;
+            top: 0;
+            width: 12px;
+            height: 12px;
+            background: var(--neon-blue);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--neon-blue);
+        }
+
+        .date {
+            font-size: 0.85rem;
+            color: var(--neon-blue);
+            font-weight: 600;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .tag {
+            background: rgba(106, 92, 255, 0.1);
+            border: 1px solid rgba(106, 92, 255, 0.3);
+            padding: 5px 12px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            color: #b4adff;
+        }
+
+        footer {
+            padding: 60px 10%;
+            border-top: 1px solid var(--glass-border);
+            text-align: center;
+            color: #444;
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 992px) {
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 20px 5%;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            section {
+                padding: 80px 5% 40px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-blobs">
+        <div class="blob"></div>
+    </div>
+    <div class="cursor-follower" id="cursor"></div>
+
+    <nav id="navbar">
+        <div class="logo">FILIP TUNEGA</div>
+        <div class="nav-links">
+            <a href="#experience">Skúsenosti</a>
+            <a href="#education">Vzdelanie</a>
+            <a href="#skills">Znalosti</a>
+            <a href="#contact">Kontakt</a>
+        </div>
+    </nav>
+
+    <header
+        style="height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 0 10%;">
+        <h1 style="font-size: clamp(2.5rem, 8vw, 5rem); font-weight: 800; line-height: 1.1;">
+            Ahoj, som <span
+                style="background: var(--neon-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Filip</span>
+        </h1>
+        <p style="margin-top: 25px; color: var(--text-gray); max-width: 650px; font-size: 1.1rem;">
+            Aktívny a cieľavedomý študent technického lýcea. Mojím cieľom je kokpit lietadla, zatiaľ čo v IT budujem
+            pevné základy v počítačových sieťach.
+        </p>
+        <div style="margin-top: 40px; display: flex; gap: 20px;">
+            <a href="#contact"
+                style="background: var(--neon-gradient); color: #000; padding: 15px 30px; border-radius: 12px; text-decoration: none; font-weight: 700; transition: 0.3s;">Kontaktovať</a>
+            <a href="#experience"
+                style="border: 1px solid var(--glass-border); color: #fff; padding: 15px 30px; border-radius: 12px; text-decoration: none; font-weight: 600; transition: 0.3s;">Zobraziť
+                CV</a>
+        </div>
+    </header>
+
+    <section id="experience">
+        <h2><i data-lucide="briefcase"></i> Pracovné skúsenosti</h2>
+        <div class="grid">
+            <div class="timeline-item">
+                <div class="date">December 2025 – Doteraz</div>
+                <h3>Barista</h3>
+                <p style="color: var(--neon-purple);">Starbucks Slovakia, Trenčín</p>
+            </div>
+            <div class="timeline-item">
+                <div class="date">Jún 2023 – Doteraz</div>
+                <h3>Vyprevádzač (Brigáda)</h3>
+                <p style="color: var(--neon-purple);">Tiptravel a.s., Bratislava</p>
+            </div>
+            <div class="timeline-item">
+                <div class="date">Jún 2023 – Doteraz</div>
+                <h3>Animátor tábora</h3>
+                <p style="color: var(--neon-purple);">DOMKA, Kaplna</p>
+            </div>
+            <div class="timeline-item">
+                <div class="date">Máj 2025 – September 2025</div>
+                <h3>Čašník (Letná brigáda)</h3>
+                <p style="color: var(--neon-purple);">Pizzeria Panelák, Trenčín</p>
+            </div>
+            <div class="timeline-item">
+                <div class="date">Január 2025 – Júl 2025</div>
+                <h3>Predávač</h3>
+                <p style="color: var(--neon-purple);">Tesco Stores, Trenčín</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="education">
+        <div class="grid" style="grid-template-columns: 1.5fr 1fr;">
+            <div>
+                <h2><i data-lucide="graduation-cap"></i> Vzdelanie</h2>
+                <div class="card" style="margin-bottom: 20px;">
+                    <div class="date">2023 – Doteraz</div>
+                    <h3>SOŠ Informačných technológií</h3>
+                    <p style="color: var(--text-gray);">Zameranie: IT & Počítačové siete</p>
+                </div>
+                <div class="card">
+                    <div class="date">2022 – 2023</div>
+                    <h3>Gymnázium Ľudovíta Štúra</h3>
+                    <p style="color: var(--text-gray);">Francúzska bilingválna sekcia</p>
+                </div>
+            </div>
+            <div>
+                <h2><i data-lucide="award"></i> Certifikáty</h2>
+                <div class="card">
+                    <ul style="list-style: none; color: var(--text-gray); font-size: 0.9rem;">
+                        <li style="margin-bottom: 15px;">
+                            <strong style="color: #fff; display: block;">Prvá pomoc (33h)</strong>
+                            Helpo s.r.o. (2023)
+                        </li>
+                        <li>
+                            <strong style="color: #fff; display: block;">Hudobné vzdelanie</strong>
+                            ZUŠ - Hra na gitare (2015-2023)
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills">
+        <h2><i data-lucide="layers"></i> Znalosti a Jazyky</h2>
+        <div class="grid">
+            <div class="card">
+                <h3 style="margin-bottom: 15px; color: var(--neon-blue);">Znalosti</h3>
+                <div class="tags">
+                    <span class="tag">Administrácia LAN/WAN</span>
+                    <span class="tag">Konfigurácia siete</span>
+                    <span class="tag">C++</span>
+                    <span class="tag">MacOS & iOS Expert</span>
+                    <span class="tag">Práca s PC</span>
+                    <span class="tag">SQL</span>
+                    <span class="tag">Libre Office</span>
+                    <span class="tag">Microsoft Office</span>
+                    <span class="tag">Strih videa (základy)</span>
+                    <span class="tag">Čapovanie piva</span>
+                </div>
+            </div>
+            <div class="card">
+                <h3 style="margin-bottom: 15px; color: var(--neon-blue);">Jazyky</h3>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <div style="display: flex; justify-content: space-between;"><span>Angličtina</span><span
+                            style="color: var(--neon-purple);">C1</span></div>
+                    <div style="display: flex; justify-content: space-between;"><span>Francúzština</span><span
+                            style="color: var(--neon-purple);">A2</span></div>
+                    <div style="display: flex; justify-content: space-between;"><span>Nemčina</span><span
+                            style="color: var(--neon-purple);">A1</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <h2><i data-lucide="mail"></i> Kontaktujte ma</h2>
+        <div class="contact-container">
+            <div class="card">
+                <h3 style="margin-bottom: 20px;">Napíšte mi správu</h3>
+                <form class="contact-form" id="contactForm">
+                    <div class="form-group">
+                        <label for="name">Meno a priezvisko</label>
+                        <input type="text" id="name" placeholder="Jozef Mrkva" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">E-mail</label>
+                        <input type="email" id="email" placeholder="vas@email.sk" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Správa</label>
+                        <textarea id="message" rows="5" placeholder="Dobrý deň, mal by som záujem o..."
+                            required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn" id="submitBtn">
+                        Odoslať správu <i data-lucide="send" size="18"></i>
+                    </button>
+                </form>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 20px;">
+                <div class="card">
+                    <h3 style="margin-bottom: 15px; color: var(--neon-blue);">Kontaktné údaje</h3>
+                    <div style="display: flex; flex-direction: column; gap: 15px;">
+                        <a href="mailto:filip@tunega.fun"
+                            style="color: #fff; text-decoration: none; display: flex; align-items: center; gap: 12px;">
+                            <i data-lucide="at-sign" size="18" style="color: var(--neon-purple);"></i> filip@tunega.fun
+                        </a>
+                        <a href="tel:+421911566663"
+                            style="color: #fff; text-decoration: none; display: flex; align-items: center; gap: 12px;">
+                            <i data-lucide="phone" size="18" style="color: var(--neon-purple);"></i> +421 911 566 663
+                        </a>
+                        <div style="color: #fff; display: flex; align-items: center; gap: 12px;">
+                            <i data-lucide="map-pin" size="18" style="color: var(--neon-purple);"></i> Trenčín, SR
+                        </div>
+                    </div>
+                </div>
+                <div class="card" style="background: var(--neon-gradient); color: #000;">
+                    <h3 style="margin-bottom: 10px;">Dostupnosť</h3>
+                    <p style="font-weight: 500;">Odpovedám zvyčajne do 24 hodín. Teším sa na spoluprácu!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2026 Filip Tunega | tunega.fun | Všetky práva vyhradené.</p>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        // --- SMART NAVIGATION LOGIC ---
+        let lastScrollTop = 0;
+        const navbar = document.getElementById('navbar');
+
+        window.addEventListener('scroll', () => {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+            // 1. Priehľadnosť na vrchu
+            if (scrollTop > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+
+            // 2. Schovávanie pri scrolle nadol, zobrazenie pri scrolle nahor
+            if (scrollTop > lastScrollTop && scrollTop > 100) {
+                // Scrollujeme dole
+                navbar.classList.add('nav-hidden');
+            } else {
+                // Scrollujeme hore
+                navbar.classList.remove('nav-hidden');
+            }
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+        });
+
+        // Cursor Follower
+        const cursor = document.getElementById('cursor');
+        let mX = 0, mY = 0, cX = 0, cY = 0;
+        document.addEventListener('mousemove', e => { mX = e.clientX; mY = e.clientY; });
+        function updateCursor() {
+            cX += (mX - cX) * 0.1; cY += (mY - cY) * 0.1;
+            cursor.style.left = cX + 'px'; cursor.style.top = cY + 'px';
+            requestAnimationFrame(updateCursor);
+        }
+        updateCursor();
+
+        // Reveal on Scroll
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('section').forEach(section => observer.observe(section));
+
+        // Form Handling
+        const contactForm = document.getElementById('contactForm');
+        const submitBtn = document.getElementById('submitBtn');
+
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const originalContent = submitBtn.innerHTML;
+            submitBtn.innerHTML = 'Odosielam... <i data-lucide="loader-2" class="spin"></i>';
+            lucide.createIcons();
+            submitBtn.disabled = true;
+
+            setTimeout(() => {
+                submitBtn.innerHTML = 'Správa odoslaná! <i data-lucide="check"></i>';
+                submitBtn.style.background = '#22c55e';
+                submitBtn.style.color = '#fff';
+                lucide.createIcons();
+                contactForm.reset();
+
+                setTimeout(() => {
+                    submitBtn.innerHTML = originalContent;
+                    submitBtn.style.background = '';
+                    submitBtn.style.color = '';
+                    submitBtn.disabled = false;
+                    lucide.createIcons();
+                }, 3000);
+            }, 1500);
+        });
+    </script>
+</body>
+
+</html>
